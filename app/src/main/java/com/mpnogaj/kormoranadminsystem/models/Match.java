@@ -39,12 +39,32 @@ public class Match {
         return null;
     }
 
+    public String getTeam1(){
+        return _team1;
+    }
+
+    public String getTeam2(){
+        return _team2;
+    }
+
+    public int getId(){
+        return _matchId;
+    }
+
+    public String getTeam1Points(){
+        return _pointsTeam1;
+    }
+
+    public String getTeam2Points(){
+        return _pointsTeam2;
+    }
+
 
     @NonNull
     @Override
     public String toString() {
         String out = _team1 + " vs " + _team2;
-        if(_pointsTeam2 != null && _pointsTeam1 != null){
+        if(!_pointsTeam2.equals("null") && !_pointsTeam1.equals("null")){
             out += " - " + _pointsTeam1 + ":" + _pointsTeam2;
         }
         return out;

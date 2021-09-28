@@ -3,4 +3,9 @@
     <string name="hint_username">Gargamel</string>
     <string name="hint_password">124Smerfy!</string>
     <string name="login">Login</string>
+    <string name="set_score">Ustaw wynik</string>
+    <string name="team_1">Drużyna 1</string>
+    <string name="team_2">Drużyna 2</string>
+    <string name="set">Ustaw</string>
+    <string name="cancel">Anuluj</string>
 </resources>

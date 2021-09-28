@@ -32,6 +32,14 @@ public class Storage {
         return out;
     }
 
+    public String getUsername(){
+        return _username;
+    }
+
+    public String getPassword(){
+        return _password;
+    }
+
     public void setLoginData(String username, String password){
         _username = username;
         _password = password;
