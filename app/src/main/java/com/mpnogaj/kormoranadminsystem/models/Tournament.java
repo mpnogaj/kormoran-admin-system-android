@@ -1,5 +1,10 @@
 package com.mpnogaj.kormoranadminsystem.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Locale;
+
 public class Tournament {
 
     private final String _name, _game, _state, _repName, _tournamentType;
@@ -12,6 +17,22 @@ public class Tournament {
             _id = id;
             _repName = repName;
             _tournamentType = tournamentType;
+    }
+
+    public static Tournament constructObject(JSONObject jsonObject){
+        try{
+            return new Tournament(
+                jsonObject.getString("name"),
+                jsonObject.getString("game"),
+                jsonObject.getString("state"),
+                jsonObject.getInt("id"),
+                jsonObject.getString("rep_name"),
+                jsonObject.getString("tournament_type")
+            );
+        } catch (JSONException ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public String getName() {
@@ -36,5 +57,10 @@ public class Tournament {
 
     public int getId() {
         return _id;
+    }
+
+    @Override
+    public String toString() {
+        return _repName + " - " + _name;
     }
 }

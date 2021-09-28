@@ -2,6 +2,7 @@ package com.mpnogaj.kormoranadminsystem.helpers;
 
 import android.content.Context;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -23,10 +24,12 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.mpnogaj.kormoranadminsystem.App;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class Requester {
     private final RequestQueue requestQueue;
@@ -66,7 +69,14 @@ public class Requester {
                     responseString = String.valueOf(response.statusCode);
                     // can get more details such as response.headers
                 }
-                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                Log.d("dd", Arrays.toString(response.data));
+                JSONObject object = new JSONObject();
+                try {
+                    object = new JSONObject(new String(response.data));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return Response.success(object.toString(), HttpHeaderParser.parseCacheHeaders(response));
             }
         };
         requestQueue.add(stringRequest);

@@ -6,4 +6,5 @@ public class Endpoints {
 
     public static final String LOGIN = "administrate.php";
     public static final String TOURNAMENTS = "tournaments.php";
+    public static final String MATCHES = "matches.php";
 }
