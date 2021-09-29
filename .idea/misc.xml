@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Dev/KormoranAdminSystemAndroid/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/Dev/KormoranAdminSystemAndroid/app/src/main/res/layout/activity_matches.xml" value="0.15307971014492755" />
         <entry key="..\:/Dev/KormoranAdminSystemAndroid/app/src/main/res/layout/activity_tournaments.xml" value="0.15307971014492755" />
         <entry key="..\:/Dev/KormoranAdminSystemAndroid/app/src/main/res/layout/dialog_set_score.xml" value="0.264" />

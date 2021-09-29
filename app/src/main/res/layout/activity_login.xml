@@ -14,26 +14,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/loginActivityTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:textSize="25sp"
+        <ImageView
+            android:id="@+id/loginActivityLogoImg"
+            android:layout_width="250dp"
+            android:layout_height="70dp"
+            android:src="@drawable/login_logo"
+            android:contentDescription="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <EditText
             android:id="@+id/loginActivityUsernameBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:ems="12"
             android:inputType="textPersonName"
             android:hint="@string/hint_username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginActivityTitleText" />
+            app:layout_constraintTop_toBottomOf="@+id/loginActivityLogoImg" />
 
         <EditText
             android:id="@+id/loginActivityPasswordBox"
