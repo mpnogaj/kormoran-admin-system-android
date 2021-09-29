@@ -59,6 +59,9 @@ public class Match {
         return _pointsTeam2;
     }
 
+    public String getState(){
+        return _state;
+    }
 
     @NonNull
     @Override

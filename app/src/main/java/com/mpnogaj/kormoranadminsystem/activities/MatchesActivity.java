@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,6 +17,7 @@ import com.mpnogaj.kormoranadminsystem.helpers.Endpoints;
 import com.mpnogaj.kormoranadminsystem.helpers.Requester;
 import com.mpnogaj.kormoranadminsystem.helpers.Storage;
 import com.mpnogaj.kormoranadminsystem.models.Match;
+import com.mpnogaj.kormoranadminsystem.models.adapters.MatchAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +31,6 @@ public class MatchesActivity extends AppCompatActivity {
     private String _tournamentName;
 
     List<Match> _matches;
-    List<String> _matchesString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,7 @@ public class MatchesActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         _tournamentName = intent.getStringExtra("tournamentName");
+        //getActionBar().setTitle(_tournamentName);
 
         updateList();
     }
@@ -122,7 +122,6 @@ public class MatchesActivity extends AppCompatActivity {
 
     void updateList(){
         _matches = new ArrayList<>();
-        _matchesString = new ArrayList<>();
 
         Requester.getInstance().sendGETRequest(Endpoints.MATCHES + "?tournament=" + _tournamentName, response -> {
             try {
@@ -133,15 +132,14 @@ public class MatchesActivity extends AppCompatActivity {
                     Match match = Match.constructObject(matchJSON);
                     if(match != null) {
                         _matches.add(match);
-                        _matchesString.add(match.toString());
                     }
                 }
                 ListView listView = findViewById(R.id.matchesActivityListView);
                 listView.setAdapter(
-                        new ArrayAdapter<>(
+                        new MatchAdapter(
                                 this,
                                 android.R.layout.simple_list_item_1,
-                                _matchesString));
+                                _matches));
                 listView.setOnItemClickListener((adapterView, view, position, l) ->
                         showDialog(_matches.get(position)));
             } catch (JSONException e) {
