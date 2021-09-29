@@ -21,6 +21,7 @@ public class Storage {
         return _instance;
     }
 
+    // currently unused but may be useful in future
     public JSONObject getLoginData(){
         JSONObject out = new JSONObject();
         try {

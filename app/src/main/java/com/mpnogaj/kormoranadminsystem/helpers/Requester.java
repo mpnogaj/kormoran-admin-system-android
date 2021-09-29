@@ -1,33 +1,25 @@
 package com.mpnogaj.kormoranadminsystem.helpers;
 
-import android.content.Context;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.mpnogaj.kormoranadminsystem.App;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -50,8 +42,8 @@ public class Requester {
         return _instance;
     }
 
-    public void sendRequest(int method, String url, JSONObject requestBody, Response.Listener<String> onResponse, Response.ErrorListener onError){
-        StringRequest stringRequest = new StringRequest(method, String.format(Endpoints.BASE, url), onResponse, onError){
+    public void sendPOSTRequest(String url, JSONObject requestBody, Response.Listener<String> onResponse, Response.ErrorListener onError){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, String.format(Endpoints.BASE, url), onResponse, onError){
             @Override
             public String getBodyContentType() {
                 return "application/json; charset=utf-8";
@@ -64,26 +56,29 @@ public class Requester {
 
             @Override
             protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                String responseString = "";
+                String responseString;
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
-                    // can get more details such as response.headers
+                    if(response.data.length > 0){
+                        Log.d("Data: ", Arrays.toString(response.data));
+                        JSONObject object;
+                        try {
+                            object = new JSONObject(new String(response.data));
+                            responseString = object.toString();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
                 }
-                Log.d("dd", Arrays.toString(response.data));
-                JSONObject object = new JSONObject();
-                try {
-                    object = new JSONObject(new String(response.data));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                return Response.success(object.toString(), HttpHeaderParser.parseCacheHeaders(response));
+                return Response.success("", null);
             }
         };
         requestQueue.add(stringRequest);
     }
 
-    public void sendDataRequest(int method, String url, JSONObject requestBody, Response.Listener<String> onResponse, Response.ErrorListener onError){
-        StringRequest jsonRequest = new StringRequest(method, String.format(Endpoints.BASE, url), onResponse, onError);
+    public void sendGETRequest(String url, Response.Listener<String> onResponse, Response.ErrorListener onError){
+        StringRequest jsonRequest = new StringRequest(Request.Method.GET, String.format(Endpoints.BASE, url), onResponse, onError);
         requestQueue.add(jsonRequest);
     }
 }

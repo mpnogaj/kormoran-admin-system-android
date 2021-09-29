@@ -1,14 +1,12 @@
 package com.mpnogaj.kormoranadminsystem.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mpnogaj.kormoranadminsystem.App;
 import com.mpnogaj.kormoranadminsystem.R;
@@ -43,13 +41,14 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            Requester.getInstance().sendRequest(Request.Method.POST, Endpoints.LOGIN, requestBody, response -> {
+            Requester.getInstance().sendPOSTRequest(Endpoints.LOGIN, requestBody, response -> {
                 Storage.getInstance().setLoginData(username, password);
                 Intent intent = new Intent(this, TournamentsActivity.class);
                 startActivity(intent);
-            }, error -> {
-                Toast.makeText(App.getAppContext(), "Nieprawidłowy login lub hasło", Toast.LENGTH_LONG).show();
-            });
+            }, error -> Toast.makeText(
+                    App.getAppContext(),
+                    "Nieprawidłowy login lub hasło",
+                    Toast.LENGTH_LONG).show());
         });
     }
 }

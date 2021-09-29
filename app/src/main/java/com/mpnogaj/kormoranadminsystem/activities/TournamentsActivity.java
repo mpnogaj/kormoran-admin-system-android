@@ -2,15 +2,12 @@ package com.mpnogaj.kormoranadminsystem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.volley.Request;
 import com.mpnogaj.kormoranadminsystem.App;
 import com.mpnogaj.kormoranadminsystem.R;
 import com.mpnogaj.kormoranadminsystem.helpers.Endpoints;
@@ -22,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class TournamentsActivity extends AppCompatActivity {
@@ -39,7 +35,7 @@ public class TournamentsActivity extends AppCompatActivity {
         _tournaments = new ArrayList<>();
         _jsonTournaments = new ArrayList<>();
         _tournamentsStrings = new ArrayList<>();
-        Requester.getInstance().sendDataRequest(Request.Method.GET, Endpoints.TOURNAMENTS,null, response -> {
+        Requester.getInstance().sendGETRequest(Endpoints.TOURNAMENTS, response -> {
             try {
                 JSONObject object = new JSONObject(response);
                 JSONArray array = (JSONArray) object.get("tournaments");
@@ -54,7 +50,7 @@ public class TournamentsActivity extends AppCompatActivity {
                 }
                 ListView listView = findViewById(R.id.tournamentsActivityList);
                 listView.setAdapter(
-                        new ArrayAdapter<String>(
+                        new ArrayAdapter<>(
                                 this,
                                 android.R.layout.simple_list_item_1,
                                 _tournamentsStrings));
@@ -69,8 +65,9 @@ public class TournamentsActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> {
-            Toast.makeText(App.getAppContext(), "Nie udało się pobrać listy turniejów", Toast.LENGTH_LONG).show();
-        });
+        }, error -> Toast.makeText(
+                App.getAppContext(),
+                "Nie udało się pobrać listy turniejów",
+                Toast.LENGTH_LONG).show());
     }
 }

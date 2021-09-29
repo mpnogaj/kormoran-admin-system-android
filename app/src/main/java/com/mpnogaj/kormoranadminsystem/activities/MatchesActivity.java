@@ -1,11 +1,8 @@
 package com.mpnogaj.kormoranadminsystem.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,7 +10,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mpnogaj.kormoranadminsystem.App;
 import com.mpnogaj.kormoranadminsystem.R;
 import com.mpnogaj.kormoranadminsystem.helpers.Endpoints;
@@ -108,21 +106,16 @@ public class MatchesActivity extends AppCompatActivity {
                 ex.printStackTrace();
             }
 
-            Requester.getInstance().sendRequest(Request.Method.POST, Endpoints.MATCHES, requestBody,
-                    response -> {
-                        Toast.makeText(dialog.getContext(), "Wynik ustawiony", Toast.LENGTH_LONG).show();
-                        updateList();
-                    },
-                    error -> {
-                        Toast.makeText(dialog.getContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show();
-                    });
+            Requester.getInstance().sendPOSTRequest(Endpoints.MATCHES, requestBody, response -> {
+                Toast.makeText(dialog.getContext(), "Wynik ustawiony", Toast.LENGTH_LONG).show();
+                updateList();
+            }, error ->
+                    Toast.makeText(dialog.getContext(), "Coś poszło nie tak!", Toast.LENGTH_LONG).show());
 
             dialog.dismiss();
         });
 
-        cancelBtn.setOnClickListener(view -> {
-            dialog.dismiss();
-        });
+        cancelBtn.setOnClickListener(view -> dialog.dismiss());
 
         dialog.show();
     }
@@ -131,7 +124,7 @@ public class MatchesActivity extends AppCompatActivity {
         _matches = new ArrayList<>();
         _matchesString = new ArrayList<>();
 
-        Requester.getInstance().sendRequest(Request.Method.GET, Endpoints.MATCHES + "?tournament=" + _tournamentName, null, response -> {
+        Requester.getInstance().sendGETRequest(Endpoints.MATCHES + "?tournament=" + _tournamentName, response -> {
             try {
                 JSONObject object = new JSONObject(response);
                 JSONArray array = (JSONArray) object.get("matches");
@@ -145,20 +138,18 @@ public class MatchesActivity extends AppCompatActivity {
                 }
                 ListView listView = findViewById(R.id.matchesActivityListView);
                 listView.setAdapter(
-                        new ArrayAdapter<String>(
+                        new ArrayAdapter<>(
                                 this,
                                 android.R.layout.simple_list_item_1,
                                 _matchesString));
-
-                listView.setOnItemClickListener((adapterView, view, position, l) -> {
-                    showDialog(_matches.get(position));
-                });
-
+                listView.setOnItemClickListener((adapterView, view, position, l) ->
+                        showDialog(_matches.get(position)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> {
-            Toast.makeText(App.getAppContext(), "Nie udało się pobrać listy turniejów", Toast.LENGTH_LONG).show();
-        });
+        }, error -> Toast.makeText(
+                App.getAppContext(),
+                "Nie udało się pobrać listy turniejów",
+                Toast.LENGTH_LONG).show());
     }
 }
