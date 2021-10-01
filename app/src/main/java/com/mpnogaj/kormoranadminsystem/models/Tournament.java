@@ -7,18 +7,20 @@ import org.json.JSONObject;
 
 public class Tournament {
 
-    private final String _name, _repName;
+    private final String _name, _repName, _state;
 
-    public Tournament(String name, String repName){
-            _name = name;
-            _repName = repName;
+    public Tournament(String name, String repName, String state){
+        _name = name;
+        _repName = repName;
+        _state = state;
     }
 
     public static Tournament constructObject(JSONObject jsonObject){
         try{
             return new Tournament(
                 jsonObject.getString("name"),
-                jsonObject.getString("rep_name")
+                jsonObject.getString("rep_name"),
+                jsonObject.getString("state")
             );
         } catch (JSONException ex){
             ex.printStackTrace();
@@ -30,9 +32,17 @@ public class Tournament {
         return _name;
     }
 
+    public String getReadableName(){
+        return _repName;
+    }
+
+    public String getState(){
+        return _state;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return _repName + " - " + _name;
+        return _repName;
     }
 }

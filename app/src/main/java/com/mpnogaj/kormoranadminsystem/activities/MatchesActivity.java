@@ -30,9 +30,8 @@ import java.util.List;
 public class MatchesActivity extends AppCompatActivity {
 
     private String _tournamentName;
-    private SwipeRefreshLayout swipeRefreshLayout;
-
-    List<Match> _matches;
+    private SwipeRefreshLayout _swipeRefreshLayout;
+    private List<Match> _matches;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +41,10 @@ public class MatchesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         _tournamentName = intent.getStringExtra("tournamentName");
         //getActionBar().setTitle(_tournamentName);
-        swipeRefreshLayout = this.findViewById(R.id.matchesActivityRefresh);
-        swipeRefreshLayout.setOnRefreshListener(
-            // on refresh
-            this::updateList
+        _swipeRefreshLayout = this.findViewById(R.id.matchesActivityRefresh);
+        _swipeRefreshLayout.setOnRefreshListener(
+                // on refresh
+                this::updateList
         );
         updateList();
     }
@@ -130,7 +129,7 @@ public class MatchesActivity extends AppCompatActivity {
         _matches = new ArrayList<>();
 
         Requester.getInstance().sendGETRequest(Endpoints.MATCHES + "?tournament=" + _tournamentName, response -> {
-            swipeRefreshLayout.setRefreshing(false);
+            _swipeRefreshLayout.setRefreshing(false);
             try {
                 JSONObject object = new JSONObject(response);
                 JSONArray array = (JSONArray) object.get("matches");
@@ -153,7 +152,7 @@ public class MatchesActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }, error -> {
-            swipeRefreshLayout.setRefreshing(false);
+            _swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(
                 App.getAppContext(),
                 "Nie udało się pobrać listy meczów",
