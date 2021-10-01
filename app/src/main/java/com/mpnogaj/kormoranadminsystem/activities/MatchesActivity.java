@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mpnogaj.kormoranadminsystem.App;
 import com.mpnogaj.kormoranadminsystem.R;
@@ -29,6 +30,7 @@ import java.util.List;
 public class MatchesActivity extends AppCompatActivity {
 
     private String _tournamentName;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     List<Match> _matches;
 
@@ -40,7 +42,11 @@ public class MatchesActivity extends AppCompatActivity {
         Intent intent = getIntent();
         _tournamentName = intent.getStringExtra("tournamentName");
         //getActionBar().setTitle(_tournamentName);
-
+        swipeRefreshLayout = this.findViewById(R.id.matchesActivityRefresh);
+        swipeRefreshLayout.setOnRefreshListener(
+            // on refresh
+            this::updateList
+        );
         updateList();
     }
 
@@ -124,6 +130,7 @@ public class MatchesActivity extends AppCompatActivity {
         _matches = new ArrayList<>();
 
         Requester.getInstance().sendGETRequest(Endpoints.MATCHES + "?tournament=" + _tournamentName, response -> {
+            swipeRefreshLayout.setRefreshing(false);
             try {
                 JSONObject object = new JSONObject(response);
                 JSONArray array = (JSONArray) object.get("matches");
@@ -145,9 +152,12 @@ public class MatchesActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, error -> Toast.makeText(
+        }, error -> {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(
                 App.getAppContext(),
-                "Nie udało się pobrać listy turniejów",
-                Toast.LENGTH_LONG).show());
+                "Nie udało się pobrać listy meczów",
+                Toast.LENGTH_LONG).show();
+        });
     }
 }

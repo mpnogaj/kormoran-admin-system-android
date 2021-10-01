@@ -6,9 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activities.MatchesActivity">
 
-    <ListView
-        android:id="@+id/matchesActivityListView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/matchesActivityRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="parent">
+        <ListView
+            android:id="@+id/matchesActivityListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
