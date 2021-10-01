@@ -65,6 +65,7 @@ public class TournamentsActivity extends AppCompatActivity {
                     Tournament tappedTournament = _tournaments.get(position);
                     Intent intent = new Intent(App.getAppContext(), MatchesActivity.class);
                     intent.putExtra("tournamentName", tappedTournament.getName());
+                    intent.putExtra("tournamentReadableName", tappedTournament.getReadableName());
                     startActivity(intent);
                 });
 

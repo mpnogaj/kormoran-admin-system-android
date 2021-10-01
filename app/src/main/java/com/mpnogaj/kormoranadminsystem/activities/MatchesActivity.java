@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MatchesActivity extends AppCompatActivity {
 
@@ -46,6 +47,8 @@ public class MatchesActivity extends AppCompatActivity {
                 // on refresh
                 this::updateList
         );
+        Objects.requireNonNull(getSupportActionBar())
+                .setTitle(intent.getStringExtra("tournamentReadableName"));
         updateList();
     }
 
