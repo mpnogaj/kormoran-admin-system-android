@@ -30,6 +30,9 @@ import java.util.Objects;
 
 public class MatchesActivity extends AppCompatActivity {
 
+    public static final String TOURNAMENT_NAME_KEY = "tournamentName";
+    public static final String TOURNAMENT_READABLE_NAME_KEY = "tournamentReadableName";
+
     private String _tournamentName;
     private SwipeRefreshLayout _swipeRefreshLayout;
     private List<Match> _matches;
@@ -40,15 +43,14 @@ public class MatchesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
 
         Intent intent = getIntent();
-        _tournamentName = intent.getStringExtra("tournamentName");
-        //getActionBar().setTitle(_tournamentName);
+        _tournamentName = intent.getStringExtra(TOURNAMENT_NAME_KEY);
         _swipeRefreshLayout = this.findViewById(R.id.matchesActivityRefresh);
         _swipeRefreshLayout.setOnRefreshListener(
                 // on refresh
                 this::updateList
         );
         Objects.requireNonNull(getSupportActionBar())
-                .setTitle(intent.getStringExtra("tournamentReadableName"));
+                .setTitle(intent.getStringExtra(TOURNAMENT_READABLE_NAME_KEY));
         updateList();
     }
 
@@ -56,7 +58,7 @@ public class MatchesActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(MatchesActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
-        dialog.setContentView(R.layout.dialog_set_score);
+        dialog.setContentView(R.layout.dialog_set_match_info);
 
         final EditText team1ScoreBox = dialog.findViewById(R.id.setScoreDialogTeam1Box);
         final EditText team2ScoreBox = dialog.findViewById(R.id.setScoreDialogTeam2Box);

@@ -64,8 +64,8 @@ public class TournamentsActivity extends AppCompatActivity {
                 listView.setOnItemClickListener((adapterView, view, position, l) -> {
                     Tournament tappedTournament = _tournaments.get(position);
                     Intent intent = new Intent(App.getAppContext(), MatchesActivity.class);
-                    intent.putExtra("tournamentName", tappedTournament.getName());
-                    intent.putExtra("tournamentReadableName", tappedTournament.getReadableName());
+                    intent.putExtra(MatchesActivity.TOURNAMENT_NAME_KEY, tappedTournament.getName());
+                    intent.putExtra(MatchesActivity.TOURNAMENT_READABLE_NAME_KEY, tappedTournament.getReadableName());
                     startActivity(intent);
                 });
 
